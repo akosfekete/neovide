@@ -4,6 +4,7 @@ const DEFAULT_FONT_SIZE: f32 = 14.0;
 pub struct FontOptions {
     pub font_list: Vec<String>,
     pub size: f32,
+    pub height_adj: u64,
     pub bold: bool,
     pub italic: bool,
     pub allow_float_size: bool,
@@ -13,6 +14,7 @@ impl FontOptions {
     pub fn parse(guifont_setting: &str) -> FontOptions {
         let mut font_list = Vec::new();
         let mut size = DEFAULT_FONT_SIZE;
+        let mut height_adj: u64 = 0;
         let mut bold = false;
         let mut italic = false;
         let mut allow_float_size = false;
@@ -43,6 +45,10 @@ impl FontOptions {
                 bold = true;
             } else if part == "i" {
                 italic = true;
+            } else if part.starts_with("lh") && part.len() > 2 {
+                if let Ok(parsed_height_adj) = part[2..].parse::<u64>() {
+                    height_adj = parsed_height_adj;
+                }
             }
         }
 
@@ -51,6 +57,7 @@ impl FontOptions {
             bold,
             italic,
             allow_float_size,
+            height_adj,
             size: points_to_pixels(size),
         }
     }
@@ -68,6 +75,7 @@ impl Default for FontOptions {
             italic: false,
             allow_float_size: false,
             size: points_to_pixels(DEFAULT_FONT_SIZE),
+            height_adj: 0,
         }
     }
 }

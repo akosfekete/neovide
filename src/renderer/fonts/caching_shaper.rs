@@ -152,7 +152,7 @@ impl CachingShaper {
         let font_height = (metrics.ascent + metrics.descent + metrics.leading).ceil() as u64;
         let font_width = (glyph_advance + 0.5).floor() as u64;
 
-        (font_width, font_height)
+        (font_width, font_height + self.options.height_adj)
     }
 
     pub fn underline_position(&mut self) -> u64 {
